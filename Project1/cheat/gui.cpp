@@ -186,8 +186,13 @@ void Colors()
 	style.ChildRounding = 6.0f;
 
 	style.Colors[ImGuiCol_WindowBg] = ImColor (28, 28, 28);
-	style.Colors[ImGuiCol_ChildBg] = ImColor (39, 39, 39);
+	//style.Colors[ImGuiCol_ChildBg] = ImColor (39, 39, 39);
+	//style.Colors[ImGuiCol_Border] = ImColor(53,53,53);
+
+	//style.Colors[ImGuiCol_WindowBg] = ImColor(Main::menuBackgroundColor[0], Main::menuBackgroundColor[1], Main::menuBackgroundColor[2], Main::menuBackgroundColor[3]);
+	style.Colors[ImGuiCol_ChildBg] = ImColor(39, 39, 39);
 	style.Colors[ImGuiCol_Border] = ImColor(53,53,53);
+
 	style.Colors[ImGuiCol_Text] = ImColor(255, 255, 255);
 
 	style.Colors[ImGuiCol_Header] = ImColor(24, 24, 24);
@@ -446,135 +451,254 @@ void gui::render() noexcept
 				// Tab 2	// Anti Aim
 				if (Settings::Tab == 2)
 				{					
-					ImGui::Text("2");
+					ImGui::BeginChild("##AALeft", ImVec2(310, 780), false);
+					{
+						ImGui::Text("Anti Aim");
+						ImGui::Checkbox("Enable AA", &AntiAim::masterSwitch);
+						// Empty until I fully understand how to impliment an AA
+					}
+					ImGui::EndChild();
+
+					ImGui::SameLine();
+
+					ImGui::BeginChild("##AARight", ImVec2(290, 780), false);
+					{
+
+					}
+					ImGui::EndChild();
 				}
 				// Tab 3	// Legitbot
 				if (Settings::Tab == 3)
 				{
-					ImGui::BeginChild("##PlayersLeft", ImVec2(310, 780), false);
-					ImGui::Text("Aimbot");
-					ImGui::Checkbox("Aimbot Master Switch", &Aimbot::masterSwitch);
-					ImGui::Checkbox("Backtrack Enabled", &Aimbot::backtrackEnabled);
-
-					if (Aimbot::backtrackEnabled)
+					ImGui::BeginChild("##LegitLeft", ImVec2(310, 780), false);
 					{
-						ImGui::SliderInt("Backtrack Amount", &Aimbot::backtrackingAmount, 0, 12);
+						ImGui::Text("Aimbot");
+						ImGui::Checkbox("Aimbot Master Switch", &Aimbot::masterSwitch);
+						ImGui::Checkbox("Backtrack Enabled", &Aimbot::backtrackEnabled);
+
+						if (Aimbot::backtrackEnabled)
+						{
+							ImGui::SliderInt("Backtrack Amount", &Aimbot::backtrackingAmount, 0, 12);
+						}
+
+						ImGui::Checkbox("Aim at backtrack", &Aimbot::aimAtBacktrack);
+
+						ImGui::Spacing();
+						ImGui::Spacing();
+						ImGui::Spacing();
+
+						ImGui::Text("Triggerbot");
+						ImGui::Checkbox("Enable triggerbot", &Triggerbot::masterSwitch);
+
+						if (Triggerbot::masterSwitch)
+						{
+							ImGui::SliderFloat("Fire Delay", &Triggerbot::fireDelay, 0, 100);
+							ImGui::SliderFloat("Hit Chance", &Triggerbot::hitchance, 0, 100);
+						}
+
 					}
 
-					ImGui::Checkbox("Aim at backtrack", &Aimbot::aimAtBacktrack);
-
 					ImGui::EndChild();
-					ImGui::SameLine();
-					ImGui::BeginChild("##PlayersRight", ImVec2(290, 780), false);
 
+					ImGui::SameLine();
+
+					ImGui::BeginChild("##LegitRight", ImVec2(290, 780), false);
+					{
+
+					}
 					ImGui::EndChild();
 				}
 				// Tab 4	// Players
 				if (Settings::Tab == 4)
 				{
 					ImGui::BeginChild("##PlayersLeft", ImVec2(300, 780), false);
-					ImGui::Checkbox("Box ESP", &Visuals::boxESP);
-					ImGui::Checkbox("Line ESP", &Visuals::lineESP);
-					ImGui::Checkbox("Skeleton ESP", &Visuals::skeletonESP);
-					ImGui::Checkbox("Health Bar", &Visuals::healthBar);
-					ImGui::Checkbox("Glow ESP", &Visuals::glowESP);
-					ImGui::Checkbox("Only Visible", &Visuals::onlyVisible);
-					ImGui::Checkbox("On Visible", &Visuals::onVisible);
-					ImGui::Checkbox("Head Position", &Visuals::showHeadPos);
-
+					{
+						ImGui::Checkbox("Box ESP", &Visuals::boxESP);
+						ImGui::Checkbox("Line ESP", &Visuals::lineESP);
+						ImGui::Checkbox("Skeleton ESP", &Visuals::skeletonESP);
+						ImGui::Checkbox("Health Bar", &Visuals::healthBar);
+						ImGui::Checkbox("Glow ESP", &Visuals::glowESP);
+						ImGui::Checkbox("Only Visible", &Visuals::onlyVisible);
+						ImGui::Checkbox("On Visible", &Visuals::onVisible);
+						ImGui::Checkbox("Head Position", &Visuals::showHeadPos);
+					}
 					ImGui::EndChild();
+
 					ImGui::SameLine();
+
 					ImGui::BeginChild("##PlayersRight", ImVec2(300, 780), false);
-
-					//ImGui::ColorEditOptionsPopup(Visuals::boxColor, );
+					{
+						//ImGui::ColorEditOptionsPopup(Visuals::boxColor, );
 					//ImGui::ColorPicker4("Box Color", Visuals::boxColor);
-					ImGui::ColorEdit4("Box ESP", Visuals::boxColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
-					ImGui::ColorEdit4("Line ESP", Visuals::lineColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
-					ImGui::ColorEdit4("Skeleton ESP", Visuals::skeletonColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
-					ImGui::ColorEdit4("Health Bar", Visuals::healthColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
-					ImGui::ColorEdit4("Glow ESP", Visuals::glowColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
-					ImGui::ColorEdit4("Visible Chams", Visuals::visibleColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
-					ImGui::ColorEdit4("Hidden Chams", Visuals::hiddenColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
-					ImGui::ColorEdit4("Head Dot", Visuals::headDotColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
+						ImGui::ColorEdit4("Box ESP", Visuals::boxColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
+						ImGui::ColorEdit4("Line ESP", Visuals::lineColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
+						ImGui::ColorEdit4("Skeleton ESP", Visuals::skeletonColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
+						ImGui::ColorEdit4("Health Bar", Visuals::healthColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
+						ImGui::ColorEdit4("Glow ESP", Visuals::glowColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
+						ImGui::ColorEdit4("Visible Chams", Visuals::visibleColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
+						ImGui::ColorEdit4("Hidden Chams", Visuals::hiddenColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
+						ImGui::ColorEdit4("Head Dot", Visuals::headDotColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
 
-					ImGui::Spacing();
-					ImGui::Spacing();
-					ImGui::Spacing();
-					
-					ImGui::Combo("Health Bar Pos", &Visuals::healthBarPos, Visuals::healthBarOptions, 4);
-					ImGui::Combo("Glow Type", &Visuals::glowType, Visuals::glowOptions, 2);
-					ImGui::Combo("Chams Type", &Visuals::chamsType, Visuals::chamsOptions, 3);
+						ImGui::Spacing();
+						ImGui::Spacing();
+						ImGui::Spacing();
 
+						ImGui::Combo("Health Bar Pos", &Visuals::healthBarPos, Visuals::healthBarOptions, 4);
+						ImGui::Combo("Glow Type", &Visuals::glowType, Visuals::glowOptions, 2);
+						ImGui::Combo("Chams Type", &Visuals::chamsType, Visuals::chamsOptions, 3);
+					}			
 					ImGui::EndChild();
 				}
 				// Tab 5	//Weapon
 				if (Settings::Tab == 5)
 				{
-					ImGui::Text("5");
+					ImGui::BeginChild("##WeaponLeft", ImVec2(300, 780), false);
+					{
+						ImGui::Text("Weapon");
+					}
+					ImGui::EndChild();
+
+					ImGui::SameLine();
+
+					ImGui::BeginChild("##WeaponRight", ImVec2(300, 780), false);
+					{
+
+					}
+					ImGui::EndChild();
 				}
 				// Tab 6	// Grenades
 				if (Settings::Tab == 6)
 				{
-					ImGui::Text("6");
+					ImGui::BeginChild("##GrenadeLeft", ImVec2(300, 780), false);
+					{
+						ImGui::Text("Grenades");
+					}
+					ImGui::EndChild();
+
+					ImGui::SameLine();
+
+					ImGui::BeginChild("##GrenadeRight", ImVec2(300, 780), false);
+					{
+
+					}
+					ImGui::EndChild();
 				}
 				// Tab 7	// World
 				if (Settings::Tab == 7)
 				{
-					ImGui::BeginChild("##PlayersLeft", ImVec2(300, 780), false);
-					ImGui::Checkbox("Radar Reveal", &World::radarReveal);
-					ImGui::Text("Removals");
-					ImGui::Checkbox("Smoke", &World::removeSmoke);
-					ImGui::Checkbox("Flash Bangs", &World::removeFlash);
-					ImGui::Checkbox("World Color", &World::worldColor);
-					ImGui::Checkbox("Bomb Timer", &World::bombTimer);
-					ImGui::Checkbox("Hit Marker", &World::hitMarker);
-
+					ImGui::BeginChild("##WorldLeft", ImVec2(300, 780), false);
+					{
+						ImGui::Checkbox("Radar Reveal", &World::radarReveal);
+						ImGui::Text("Removals");
+						ImGui::Checkbox("Smoke", &World::removeSmoke);
+						ImGui::Checkbox("Flash Bangs", &World::removeFlash);
+						ImGui::Checkbox("World Color", &World::worldColor);
+						ImGui::Checkbox("Bomb Timer", &World::bombTimer);
+						ImGui::Checkbox("Hit Marker", &World::hitMarker);
+					}
 					ImGui::EndChild();
+
 					ImGui::SameLine();
-					ImGui::BeginChild("##PlayersRight", ImVec2(300, 780), false);
 
-					ImGui::ColorEdit4("World", World::worldColorOption, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
-
+					ImGui::BeginChild("##WorldRight", ImVec2(300, 780), false);
+					{
+						ImGui::ColorEdit4("World", World::worldColorOption, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
+					}
 					ImGui::EndChild();
 				}
 				// Tab 8	// View
 				if (Settings::Tab == 8)
 				{
-					ImGui::BeginChild("##PlayersLeft", ImVec2(300, 780), false);
-					ImGui::Checkbox("Out of FOV arrows", &View::oofArrows);
-					ImGui::Checkbox("Player FOV", &View::playerFOV);
-					ImGui::Checkbox("Flash Bangs", &View::flashBangs);
-
+					ImGui::BeginChild("##ViewLeft", ImVec2(300, 780), false);
+					{
+						ImGui::Checkbox("Out of FOV arrows", &View::oofArrows);
+						ImGui::Checkbox("Player FOV", &View::playerFOV);
+						ImGui::Checkbox("Flash Bangs", &View::flashBangs);
+					}
 					ImGui::EndChild();
+
 					ImGui::SameLine();
-					ImGui::BeginChild("##PlayersRight", ImVec2(300, 780), false);
 
-					ImGui::SliderFloat("Arrow Size", &View::oofArrowSize,0,10);
-					ImGui::SliderFloat("Arrow Distance", &View::oofArrowDistance, 0, 10);
-					ImGui::SliderFloat("Third Person Distance", &View::thirdPersonDistance, 0, 10);
-					ImGui::SliderFloat("Aspect Ratio", &View::aspectRatioSize, 0, 10);
-
+					ImGui::BeginChild("##ViewRight", ImVec2(300, 780), false);
+					{
+						ImGui::SliderFloat("Arrow Size", &View::oofArrowSize, 0, 10);
+						ImGui::SliderFloat("Arrow Distance", &View::oofArrowDistance, 0, 10);
+						ImGui::SliderFloat("Third Person Distance", &View::thirdPersonDistance, 0, 10);
+						ImGui::SliderFloat("Aspect Ratio", &View::aspectRatioSize, 0, 10);
+					}
 					ImGui::EndChild();
 				}
 				// Tab 9	// Skins
 				if (Settings::Tab == 9)
 				{
-					ImGui::Text("9");
+					ImGui::BeginChild("##SkinsLeft", ImVec2(300, 780), false);
+					{
+						ImGui::Text("Skin Changer");
+					}
+					ImGui::EndChild();
+
+					ImGui::SameLine();
+
+					ImGui::BeginChild("##SkinsRight", ImVec2(300, 780), false);
+					{
+						
+					}
+					ImGui::EndChild();
 				}
 				// Tab 10	// Main
 				if (Settings::Tab == 10)
 				{
-					ImGui::Text("10");
+					ImGui::BeginChild("##MainLeft", ImVec2(300, 780), false);
+					{
+						ImGui::Text("Main");
+						ImGui::Text("Menu Colors");
+						ImGui::ColorEdit4("Background Color", Main::menuBackgroundColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
+						ImGui::ColorEdit4("Outline Color", Main::menuLineColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
+						ImGui::ColorEdit4("Child Color", Main::menuChildColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_AlphaBar);
+					}
+					ImGui::EndChild();
+
+					ImGui::SameLine();
+
+					ImGui::BeginChild("##MainRight", ImVec2(300, 780), false);
+					{
+
+					}
+					ImGui::EndChild();
 				}
 				// Tab 11	// Scripts
 				if (Settings::Tab == 11)
 				{
-					ImGui::Text("11");
+					ImGui::BeginChild("##ScriptsLeft", ImVec2(300, 780), false);
+					{
+						ImGui::Text("Scripting");
+					}
+					ImGui::EndChild();
+
+					ImGui::SameLine();
+
+					ImGui::BeginChild("##ScriptsRight", ImVec2(300, 780), false);
+					{
+
+					}
+					ImGui::EndChild();
 				}
 				// Tab 12	// Config
 				if (Settings::Tab == 12)
 				{
-					ImGui::Text("12");
+					ImGui::BeginChild("##ConfigLeft", ImVec2(300, 780), false);
+					{
+						ImGui::Text("Config");
+					}
+					ImGui::EndChild();
+
+					ImGui::SameLine();
+
+					ImGui::BeginChild("##ConfigRight", ImVec2(300, 780), false);
+					{
+
+					}
+					ImGui::EndChild();
 				}
 				
 

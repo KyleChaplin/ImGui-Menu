@@ -116,7 +116,7 @@ namespace Grenade
 	static bool masterSwitch = false;
 }
 
-namespace misc
+namespace Misc
 {
 	static bool revealRanks = false;
 	static bool clanTagChanger = false;
@@ -126,19 +126,19 @@ namespace misc
 	static bool bunnyHop = false;
 }
 
-namespace main
+namespace Main
 {
-	static float menuBackgroundColor[] = { 255.0f, 255.0f, 255.0f, 1.0f };
-	static float menuAutolineColor[] = { 255.0f, 255.0f, 255.0f, 1.0f };
+	static float menuBackgroundColor[] = { 28.0f, 28.0f, 28.0f, 1.0f };
+	static float menuLineColor[] = { 255.0f, 255.0f, 255.0f, 1.0f };
 	static float menuChildColor[] = { 255.0f, 255.0f, 255.0f, 1.0f };
 }
 
-namespace scripts
+namespace Scripts
 {
 	static bool masterSwitch = false;
 }
 
-namespace config
+namespace Config
 {
 	static bool saveConfig = false;
 	static bool loadConfig = false;
