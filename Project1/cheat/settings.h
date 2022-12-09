@@ -93,6 +93,20 @@ namespace Aimbot
 	static bool backtrackEnabled = false;
 	static int backtrackingAmount = 0;
 	static bool aimAtBacktrack = false;
+	static bool ignoreSmoke = false;
+	static bool ignoreFlash = false;
+	static bool scopeOnly = false;
+	
+	// Hit Boxes options
+	static const char* hitBoxes[]
+	{
+		"Head",
+		"Neck",
+		"Chest",
+		"Lower Chest",
+		"Legs"
+	};
+	static int hitBoxesSelected = 1;
 }
 
 namespace Triggerbot
